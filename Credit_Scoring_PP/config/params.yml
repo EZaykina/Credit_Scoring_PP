@@ -1,0 +1,40 @@
+preprocessing:
+    map_change_columns:
+        cb_person_default_on_file:
+            'N': 0
+            'Y': 1
+    change_type_columns:
+        loan_status: category
+    map_bins_columns:
+        person_age: [35, 55]
+        person_income: [40000, 80000]
+        person_emp_length: [3, 10]
+        loan_amnt: [7000, 10000]
+        loan_int_rate: [8, 15]
+        loan_percent_income: [0.1, 0.3]
+        cb_person_cred_hist_length: [5, 10]
+    drop_columns: ['id']
+    train_path: ../data/raw/train.csv
+    unique_values_path: ../data/processed/unique_values.json
+    train_path_proc: ../data/processed/train.csv
+    test_size: 0.2
+    target_column: loan_status
+    random_state: 10
+
+train:
+    n_trials: 10
+    n_folds: 5
+    random_state: 10
+    target_column: loan_status
+    model_path: ../models/model_stacking.joblib
+    metrics_path: ../report/metrics.json
+    params_path: ../report/params.json
+
+evaluate:
+    predict_path: ../data/check/test.csv
+
+endpoints:
+    train: 'http://fastapi:8000/train'
+    prediction_input: 'http://fastapi:8000/predict_input'
+    prediction_from_file: 'http://fastapi:8000/predict'
+
